@@ -36,4 +36,15 @@ public class HelloController {
     public String f2() {
         return "f2";
     }
+
+    @RequestMapping("/doLogin")
+    public String doLogin() {
+        return "登录成功";
+    }
+
+
+    @RequestMapping("/index")
+    public String index() {
+        return "首页";
+    }
 }

@@ -18,6 +18,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -69,28 +70,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     out.flush();
                     out.close();
                 })
-                .failureHandler((req, resp, e) -> {
+                /*.failureHandler((req, resp, e) -> {
                     resp.setContentType("application/json;charset=utf-8");
                     PrintWriter out = resp.getWriter();
                     out.write(e.getMessage());
                     out.flush();
                     out.close();
-                })
+                })*/
+                .failureHandler(new AuthenticationFailureHandlerImpl())
                 .permitAll()
                 .and()
                 .logout()
-                .logoutUrl("/logout")
+                .logoutUrl("/logout")/*
                 .logoutSuccessHandler((req, resp, authentication) -> {
                     resp.setContentType("application/json;charset=utf-8");
                     PrintWriter out = resp.getWriter();
                     out.write("注销成功");
                     out.flush();
                     out.close();
-                })
+                })*/
+                .logoutSuccessHandler(new LogoutSuccessHandlerImpl())
                 .permitAll()
                 .and()
                 .csrf().disable().exceptionHandling()
-                .authenticationEntryPoint((req, resp, authException) -> {
+                .authenticationEntryPoint((req, resp, authException) -> {//令牌失效的提示信息
                             resp.setContentType("application/json;charset=utf-8");
                             PrintWriter out = resp.getWriter();
                             out.write("尚未登录，请先登录");
