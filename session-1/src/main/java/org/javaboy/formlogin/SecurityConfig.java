@@ -43,15 +43,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login.html")
+                //.loginPage("/login.html")
                 .permitAll()
                 .and()
                 .csrf().disable()
                 .sessionManagement()
-                .maximumSessions(1)
-                .maxSessionsPreventsLogin(true);
+                .maximumSessions(1)//想要用新的登录踢掉旧的登录，我们只需要将最大会话数设置为 1 即可
+                .maxSessionsPreventsLogin(true);//如果相同的用户已经登录了，你不想踢掉他，而是想禁止新的登录操作，那也好办  添加 maxSessionsPreventsLogin 配置即可  有缺陷：如果用户直接关闭浏览器。或者登录失败，都会记录为已有用户登录
     }
 
+
+
+    /**
+     * 测试：
+     * 配置完成后，分别用 Chrome 和 Firefox 两个浏览器进行测试（或者使用 Chrome 中的多用户功能）。
+     *
+     * Chrome 上登录成功后，访问 /hello 接口。
+     * Firefox 上登录成功后，访问 /hello 接口。
+     *
+     * 提示：Maximum sessions of 1 for this principal exceeded
+     *
+     * 实现原理：
+     * AbstractAuthenticationProcessingFilter#doFilter 方法
+     *
+     * 调用 attemptAuthentication 方法走完认证流程之后，回来之后，接下来就是调用 sessionStrategy.onAuthentication 方法，这个方法就是用来处理 session 的并发问题的
+
+     */
     @Bean
     HttpSessionEventPublisher httpSessionEventPublisher() {
         return new HttpSessionEventPublisher();
