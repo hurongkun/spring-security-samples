@@ -16,6 +16,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class MyWebAuthenticationDetails extends WebAuthenticationDetails {
 
+
+    /**
+     * 当然，WebAuthenticationDetails 也可以自己定制，因为默认它只提供了 IP 和 sessionid 两个信息，如果我们想保存关于 Http 请求的更多信息，就可以通过自定义 WebAuthenticationDetails 来实现。
+     *
+     * 如果我们要定制 WebAuthenticationDetails，还要连同 WebAuthenticationDetailsSource 一起重新定义。
+     */
     private boolean isPassed;
 
     public MyWebAuthenticationDetails(HttpServletRequest req) {

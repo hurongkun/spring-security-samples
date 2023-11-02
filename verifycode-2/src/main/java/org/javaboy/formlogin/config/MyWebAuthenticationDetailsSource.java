@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component
 public class MyWebAuthenticationDetailsSource implements AuthenticationDetailsSource<HttpServletRequest,MyWebAuthenticationDetails> {
+
+    //将 MyWebAuthenticationDetailsSource 注入到 SecurityConfig 中，并在 formLogin 中配置 authenticationDetailsSource 即可成功使用我们自定义的 WebAuthenticationDetails。
+    //
+    //这样自定义完成后，WebAuthenticationDetails 中原有的功能依然保留，也就是我们还可以利用老办法继续获取用户 IP 以及 sessionId
     @Override
     public MyWebAuthenticationDetails buildDetails(HttpServletRequest context) {
         return new MyWebAuthenticationDetails(context);

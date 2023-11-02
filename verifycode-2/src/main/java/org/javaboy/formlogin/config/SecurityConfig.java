@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .authenticationDetailsSource(myWebAuthenticationDetailsSource)
+                .authenticationDetailsSource(myWebAuthenticationDetailsSource)//配置 authenticationDetailsSource 即可成功使用我们自定义的 WebAuthenticationDetails。
                 .successHandler((req, resp, auth) -> {
                     resp.setContentType("application/json;charset=utf-8");
                     PrintWriter out = resp.getWriter();
