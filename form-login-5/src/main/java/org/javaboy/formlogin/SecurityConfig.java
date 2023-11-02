@@ -69,6 +69,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             manager.createUser(User.withUsername("江南一点雨").password("123").roles("user").build());
         }
         return manager;
+        /**
+         * 首先构建一个 JdbcUserDetailsManager 实例。
+         * 给 JdbcUserDetailsManager 实例添加一个 DataSource 对象。
+         * 调用 userExists 方法判断用户是否存在，如果不存在，就创建一个新的用户出来（因为每次项目启动时这段代码都会执行，所以加一个判断，避免重复创建用户）。
+         * 用户的创建方法和我们之前 InMemoryUserDetailsManager 中的创建方法基本一致。
+         *
+         * 需要数据库的支持，因此需要添加两个依赖
+         * <dependency>
+         *     <groupId>org.springframework.boot</groupId>
+         *     <artifactId>spring-boot-starter-jdbc</artifactId>
+         * </dependency>
+         * <dependency>
+         *     <groupId>mysql</groupId>
+         *     <artifactId>mysql-connector-java</artifactId>
+         * </dependency>
+         */
     }
 
     @Override
@@ -84,6 +100,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
+                .usernameParameter("name")
+                .passwordParameter("passwd")
+                .loginPage("/login.html")
                 .loginProcessingUrl("/doLogin")
                 .successHandler((req, resp, authentication) -> {
                     Object principal = authentication.getPrincipal();
