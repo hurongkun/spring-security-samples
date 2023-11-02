@@ -14,6 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class HelloController {
+
+    /**
+     * /hello 是任何人都可以访问的接口
+     * /admin/hello 是具有 admin 身份的人才能访问的接口
+     * /user/hello 是具有 user 身份的人才能访问的接口
+     * 所有 user 能够访问的资源，admin 都能够访问
+     */
     @GetMapping("/hello")
     public String hello() {
         return "hello";
