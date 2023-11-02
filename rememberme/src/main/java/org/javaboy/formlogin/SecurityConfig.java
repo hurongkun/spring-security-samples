@@ -38,9 +38,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .and()
-                .rememberMe()
+                .rememberMe()//自动登录功能
                 .key("javaboy")
                 .and()
                 .csrf().disable();
     }
+    /**
+     * 正常情况下没有登录时，访问/hello 接口会跳转到默认的登录页面。设置了自动登录以后，下次登录可以直接访问/hello 接口
+     * 重启后，直接访问/hello 接口，不需要登录，可直接访问
+     */
 }
