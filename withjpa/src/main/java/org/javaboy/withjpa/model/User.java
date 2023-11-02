@@ -18,6 +18,7 @@ import java.util.List;
  * @GitHub https://github.com/lenve
  * @Gitee https://gitee.com/lenve
  */
+//没有表的话，先执行test里面的contextLoads()方法
 @Entity(name = "t_user")
 public class User implements UserDetails {
     @Id

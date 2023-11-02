@@ -76,6 +76,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/doLogin")
+                .loginPage("/login.html")
+                .passwordParameter("passwd")
+                .usernameParameter("name")
                 .successHandler((req, resp, authentication) -> {
                     Object principal = authentication.getPrincipal();
                     resp.setContentType("application/json;charset=utf-8");

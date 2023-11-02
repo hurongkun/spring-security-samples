@@ -14,6 +14,7 @@ import javax.persistence.Id;
  * @GitHub https://github.com/lenve
  * @Gitee https://gitee.com/lenve
  */
+//没有表的话，先执行test里面的contextLoads()方法
 @Entity(name = "t_role")
 public class Role {
     @Id
