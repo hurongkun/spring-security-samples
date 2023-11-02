@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/vc.jpg").permitAll()
+                .antMatchers("/vc.jpg").permitAll()//设置 /vc.jpg 任何人都能访问。
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -78,6 +78,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
     }
 
+    //首先我们需要验证码，这次我就懒得自己去实现了，我们用网上一个现成的验证码库 kaptcha
+    //这段配置很简单，我们就是提供了验证码图片的宽高、字符库以及生成的验证码字符长度。
+    /**
+     *
+     * <dependency>
+     *     <groupId>com.github.penggle</groupId>
+     *     <artifactId>kaptcha</artifactId>
+     *     <version>2.3.2</version>
+     * </dependency>
+     */
     @Bean
     Producer verifyCode() {
         Properties properties = new Properties();
@@ -91,6 +101,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return defaultKaptcha;
     }
 
+    /**
+     *
+     * MyAuthenticationProvider 定义好之后，接下来主要是如何让 MyAuthenticationProvider 代替 DaoAuthenticationProvider。
+     *
+     * 前面我们说，所有的 AuthenticationProvider 都是放在 ProviderManager 中统一管理的，所以接下来我们就要自己提供 ProviderManager
+     * ，然后注入自定义的 MyAuthenticationProvider，这一切操作都在 SecurityConfig 中完成：
+     *
+     * 我们需要提供一个 MyAuthenticationProvider 的实例，创建该实例时，需要提供 UserDetailService 和 PasswordEncoder 实例。
+     * 通过重写 authenticationManager 方法来提供一个自己的 AuthenticationManager，实际上就是 ProviderManager，在创建 ProviderManager 时，加入自己的 myAuthenticationProvider。
+     * 这里为了简单，我将用户直接存在内存中，提供一个 UserDetailsService 实例即可。如果大家想将用户存在数据库中，可以参考松哥之前的文章：Spring Security+Spring Data Jpa 强强联手，安全管理只有更简单！。
+     * 最后就简单配置一下各种回调即可，另外记得设置 /vc.jpg 任何人都能访问。
+     */
     @Bean
     MyAuthenticationProvider myAuthenticationProvider() {
         MyAuthenticationProvider myAuthenticationProvider = new MyAuthenticationProvider();
