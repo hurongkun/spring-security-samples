@@ -1,6 +1,7 @@
 package org.javaboy.securitydemo.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.javaboy.securitydemo.model.Hr;
 import org.javaboy.securitydemo.model.Role;
 
@@ -19,4 +20,6 @@ public interface HrMapper {
     Hr loadUserByUsername(String username);
 
     List<Role> getRolesByHrid(Integer id);
+
+    List<Role> getRolesByHrName(@Param("name") String name);
 }

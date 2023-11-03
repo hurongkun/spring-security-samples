@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(10);
     }
 
     @Override
@@ -44,4 +44,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable();
     }
+
+    public static void main(String[] args) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+        //加密
+        String encodePassword = encoder.encode("123");
+        System.out.println(encodePassword);
+        boolean matches = encoder.matches("123", "$2a$10$3NSLt9AhqQIRgCNEIoV7au93EK.ZLkINGQGsOJ.PZEdPzpBTcClkK");
+        System.out.println("password  is match："+matches);
+
+    }
+
 }

@@ -9,4 +9,7 @@
     <select id="getRolesByHrid" resultType="org.javaboy.securitydemo.model.Role">
         SELECT * FROM role r,hr_role hrr WHERE hrr.`rid`=r.`id` AND hrr.`hrid`=#{id}
     </select>
+    <select id="getRolesByHrName" resultType="org.javaboy.securitydemo.model.Role">
+        SELECT * FROM `role` where  nameZh = #{name}
+    </select>
 </mapper>
